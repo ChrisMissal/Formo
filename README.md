@@ -1,4 +1,4 @@
-Formo
+Formo [![endorse](http://api.coderwall.com/chrismissal/endorsecount.png)](http://coderwall.com/chrismissal)
 =====
 
 Formo was built on some code that I've used many times in the past. This time, however, I leveraged some fun dynamic goodness.
