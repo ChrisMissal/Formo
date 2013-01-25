@@ -3,6 +3,8 @@ Formo
 
 Formo was built on some code that I've used many times in the past. This time, however, I leveraged some fun dynamic goodness.
 
+[![NuGet Status](http://nugetstatus.com/Formo.png)](http://nugetstatus.com/packages/Formo)
+
 ## How to use it
 
 Given you have a few of the following settings in your app.config file, you can new up a `Configuration` object and call those settings directly through a property.
