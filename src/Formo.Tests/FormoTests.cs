@@ -4,6 +4,26 @@ using NUnit.Framework;
 namespace Formo.Tests
 {
     [TestFixture]
+    public class When_forced_to_use_a_string_key : ConfigurationTestBase
+    {
+        [Test]
+        public void Get_method_should_return_value()
+        {
+            var actual = configuration.Get("weird:key");
+
+            Assert.That(actual, Is.EqualTo("some value"));
+        }
+
+        [Test]
+        public void Get_method_should_work_with_type_parameters()
+        {
+            var actual = configuration.Get<int>("NumberOfRetries");
+
+            Assert.That(actual, Is.TypeOf<int>());
+        }
+    }
+
+    [TestFixture]
     public class When_using_typed_configuration_values : ConfigurationTestBase
     {
         [Test]

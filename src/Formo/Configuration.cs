@@ -53,6 +53,16 @@ namespace Formo
             throw ThrowHelper.FailedCast(destinationType, value, optionalMessage);
         }
 
+        public object Get(string key)
+        {
+            return GetValue(key);
+        }
+
+        public T Get<T>(string key)
+        {
+            return (T) ConvertValue(typeof (T), Get(key));
+        }
+
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             result = GetValue(binder.Name);
