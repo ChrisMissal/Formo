@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Dynamic;
 using System.Linq;
@@ -8,46 +9,28 @@ namespace Formo
 {
     public class Configuration : DynamicObject
     {
-        private static readonly IDictionary<Type, Func<object, object>> typeConversions;
+        private static readonly List<TypeConverter> conversions = new List<TypeConverter>();
 
-        static Configuration()
+        public Configuration(params TypeConverter[] customConvters) : this(customConvters.AsEnumerable())
         {
-            typeConversions = new Dictionary<Type, Func<object, object>>
-                {
-                    { typeof(bool), ToBool },
-                    { typeof(int), ToInt },
-                    { typeof(decimal), ToDecimal },
-                    { typeof(DateTime), ToDateTime },
-                };
         }
 
-        private static object ToBool(object value)
+        public Configuration(IEnumerable<TypeConverter> customConverters)
         {
-            return (bool) Convert.ChangeType(value, TypeCode.Boolean);
-        }
-
-        private static object ToDateTime(object value)
-        {
-            return (DateTime) Convert.ChangeType(value, TypeCode.DateTime);
-        }
-
-        private static object ToDecimal(object value)
-        {
-            return (decimal) Convert.ChangeType(value, TypeCode.Decimal);
-        }
-
-        private static object ToInt(object value)
-        {
-            return (int) Convert.ChangeType(value, TypeCode.Int32);
+            conversions.AddRange(customConverters);
         }
 
         private static object ConvertValue(Type destinationType, object value)
         {
-            Func<object, object> func;
-            if (typeConversions.TryGetValue(destinationType, out func))
-                return func(value);
+            var typeConverter = TypeDescriptor.GetConverter(destinationType);
+            if (typeConverter.IsValid(value))
+                return typeConverter.ConvertFrom(value);
 
-            var optionalMessage = "This is most likely because a SettingsConverter hasn't been " +
+            var converter = conversions.FirstOrDefault(x => x.IsValid(value));
+            if (converter != null)
+                return converter.ConvertFrom(value);
+
+            var optionalMessage = "This is most likely because a TypeConverter hasn't been " +
                                   "defined for the type '{0}'.".FormatWith(destinationType);
 
             throw ThrowHelper.FailedCast(destinationType, value, optionalMessage);
