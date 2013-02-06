@@ -26,6 +26,9 @@ namespace Formo
             if (typeConverter.IsValid(value))
                 return typeConverter.ConvertFrom(value);
 
+            if (value == null)
+                return null;
+
             var converter = conversions.FirstOrDefault(x => x.IsValid(value));
             if (converter != null)
                 return converter.ConvertFrom(value);

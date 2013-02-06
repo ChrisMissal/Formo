@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using NUnit.Framework;
 
 namespace Formo.Tests
@@ -118,6 +119,16 @@ namespace Formo.Tests
             var second = default(string);
             var third = "i exist";
             Assert.AreEqual(third, configuration.Missing(first, second, third));
+        }
+
+        [Test]
+        public void Method_looking_for_bool_should_behave_as_ConfigurationManager()
+        {
+            var key = "IsSettingMissing";
+            var expected = ConfigurationManager.AppSettings[key];
+            var actual = configuration.IsSettingMissing<bool>();
+
+            Assert.AreSame(expected, actual);
         }
     }
 
