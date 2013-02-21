@@ -13,29 +13,22 @@ Given you have a few of the following settings in your app.config file, you can 
 
     <appSettings>
         <add key="RetryAttempts" value="5" />
+        <add key="ApplicationBuildDate" value="11/4/1999 6:23 AM" />
     </appSettings>
 
 ***The code***
 
-    var config = new Configuration();
-    var retryAttempts = config.RetryAttempts;
-
-Alternately, you can call `RetryAttempts` as a method. You'll want to call this as a method if you're not certain it exists (or has a value) in your settings.
-
-    var retryAttempts = config.RetryAttempts(10);
-
-If you're pulling your default value from another source, and it has the chance of providing a null value, you can keep providing arguments as params.
-
-    var retryAttempts = config.RetryAttempts(userInput, 10);
+    dynamic config = new Configuration();
+    var retryAttempts1 = config.RetryAttempts;					// returns 5 as a string
+    var retryAttempts2 = config.RetryAttempts(10);				// returns 5 if found in config, else 10
+    var retryAttempts3 = config.RetryAttempts(userInput, 10);	// returns 5 if it exists in config, else userInput if not null, else 10
 
 Both of the values `userInput` and `10` will be ignored if the value has already been set in your file.
 
-### More!
-
 The Configuration class also has the ability to call dynamic methods with type arguments. (I know, right?!) This lets you call your property and cast it to the type of your choice.
 
-    var configuration = new Configuration();
-    var appBuildDate = configuration.ApplicationBuildDate<DateTime>();
+    dynamic config = new Configuration();
+    var appBuildDate = config.ApplicationBuildDate<DateTime>();
 
 ## Enhancements / Feedback / Issues
 
