@@ -3,35 +3,42 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Dynamic;
+using System.Globalization;
 using System.Linq;
 
 namespace Formo
 {
     public class Configuration : DynamicObject
     {
+        private readonly CultureInfo _cultureInfo;
         private static readonly List<TypeConverter> conversions = new List<TypeConverter>();
 
-        public Configuration(params TypeConverter[] customConvters) : this(customConvters.AsEnumerable())
+        public Configuration(CultureInfo cultureInfo, params TypeConverter[] customConvters) : this(cultureInfo, customConvters.AsEnumerable())
         {
         }
 
-        public Configuration(IEnumerable<TypeConverter> customConverters)
+        public Configuration(params TypeConverter[] customConvters) : this(CultureInfo.CurrentCulture, customConvters.AsEnumerable())
         {
+        }
+
+        public Configuration(CultureInfo cultureInfo, IEnumerable<TypeConverter> customConverters)
+        {
+            _cultureInfo = cultureInfo;
             conversions.AddRange(customConverters);
         }
 
-        private static object ConvertValue(Type destinationType, object value)
+        private object ConvertValue(Type destinationType, object value)
         {
-            var typeConverter = TypeDescriptor.GetConverter(destinationType);
-            if (typeConverter.IsValid(value))
-                return typeConverter.ConvertFrom(value);
-
             if (value == null)
                 return null;
 
-            var converter = conversions.FirstOrDefault(x => x.IsValid(value));
+            var typeConverter = TypeDescriptor.GetConverter(destinationType);
+            if (typeConverter.CanConvertFrom(value.GetType()))
+                return typeConverter.ConvertFrom(null, _cultureInfo, value);
+
+            var converter = conversions.FirstOrDefault(x => x.CanConvertFrom(value.GetType()));
             if (converter != null)
-                return converter.ConvertFrom(value);
+                return converter.ConvertFrom(null, _cultureInfo, value);
 
             var optionalMessage = "This is most likely because a TypeConverter hasn't been " +
                                   "defined for the type '{0}'.".FormatWith(destinationType);

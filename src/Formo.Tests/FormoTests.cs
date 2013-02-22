@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Globalization;
 using NUnit.Framework;
 
 namespace Formo.Tests
@@ -27,6 +28,14 @@ namespace Formo.Tests
     [TestFixture]
     public class When_using_typed_configuration_values : ConfigurationTestBase
     {
+        private dynamic germanConfiguration;
+
+        [SetUp]
+        public void SetUp()
+        {
+            germanConfiguration = new Configuration(new CultureInfo("de"));
+        }
+
         [Test]
         public void Method_should_convert_to_int()
         {
@@ -49,6 +58,14 @@ namespace Formo.Tests
             var actual = configuration.ApplicationBuildDate<DateTime>();
 
             Assert.That(actual, Is.EqualTo(new DateTime(1999, 11, 4, 6, 23, 0)));
+        }
+
+        [Test]
+        public void Method_should_convert_to_DateTime_of_ConfiguredCulture()
+        {
+            var actual = germanConfiguration.GermanDate<DateTime>();
+
+            Assert.That(actual, Is.EqualTo(new DateTime(2002, 1, 22)));
         }
 
         [Test]
