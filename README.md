@@ -30,6 +30,41 @@ The Configuration class also has the ability to call dynamic methods with type a
     dynamic config = new Configuration();
     var appBuildDate = config.ApplicationBuildDate<DateTime>();
 
+***Specifying Culture***
+
+If you have dates in your settings file that need to be bound to a specific culture, you can do this on creation of the Configuration class.
+
+    dynamic config = new Configuration(new CultureInfo("de"));
+
+***Property Binding***
+
+You can also use Formo to bind settings values to properties on an object:
+
+given:
+
+    <appSettings>
+        <add key="SessionTimeout" value="20" />
+        <add key="WebsiteSettingsSiteTitle" value="Cat Facts" />
+    </appSettings>
+
+and...
+
+    public class WebsiteSettings
+    {
+        public int SessionTimeout { get; set; }
+        public string SiteTitle { get; set; }
+    }
+
+then...
+
+    dynamic config = new Configuration();
+    var settings = config.Bind<WebsiteSettings>();
+
+resulting in...
+
+    settings.SessionTimeout == 20;
+    settings.SiteTitle == "Cat Facts";
+
 ## Enhancements / Feedback / Issues
 
 Use the issues tab to get in touch with me about any improvements that could be made, or any bugs you encounter.
