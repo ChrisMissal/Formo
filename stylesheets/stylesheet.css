@@ -2,6 +2,15 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+/*
+#D9D0C3
+#D2C9B9
+#C6BAAE
+#BAB4A7
+#BEC1AF
+#8C867C
+#4B4742
+*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -50,30 +59,33 @@ table {
 body {
   font-size: 1em;
   line-height: 1.5; 
-  background: #e7e7e7 url(../images/body-bg.png) 0 0 repeat;
+  background: #D9D0C3 url(../images/body-bg.png) 0 0 repeat;
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-  color: #6d6d6d;
+  color: #4B4742;
 }
 
 a {
-  color: #d5000d;
+  color: #FF4A2E;
 }
 a:hover {
-  color: #c5000c;
+  color: #FF4A2E;
+  text-decoration: underline;
 }
 
 header {
   padding-top: 35px;
-  padding-bottom: 25px;
+  padding-bottom: 35px;
+  background: url(../images/heading.png) top left no-repeat;
 }
 
 header h1 {
   font-family: 'Chivo', 'Helvetica Neue', Helvetica, Arial, serif; font-weight: 900;
   letter-spacing: -1px;
   font-size: 48px;
-  color: #303030;
+  color: #4B4742;
   line-height: 1.2;
+  text-indent: -999px;
 }
 
 header h2 {
@@ -81,7 +93,8 @@ header h2 {
   font-size: 24px;
   color: #aaa;
   font-weight: normal;
-  line-height: 1.3;
+  line-height: 2.3;
+  text-indent: 140px;
 }
 
 #container {
@@ -195,7 +208,9 @@ pre code {
 ul, ol, dl {
   margin-bottom: 20px;
 }
-
+dl > dd {
+  margin: auto auto 10px 30px;
+}
 
 /* COMMON STYLES */
 
@@ -331,6 +346,21 @@ footer a:hover {
   display: block;
   visibility: hidden;
   height: 0;
+}
+
+.nuget-install code {
+    background-color: #202020;
+    border: 4px solid silver;
+    border-bottom-left-radius: 5px 5px;
+    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px 5px;
+    border-top-right-radius: 5px 5px;
+    color: #E2E2E2;
+    display: block;
+    font: normal normal normal 1.5em/normal 'andale mono', 'lucida console', monospace;
+    line-height: 1.5em;
+    overflow: auto;
+    padding: 15px;
 }
 
 .clearfix {display: inline-block;}
