@@ -13,14 +13,51 @@ namespace Formo.Tests
     }
 
     [TestFixture]
+    public class BindTests_Default : BindTests
+    {
+    }
+
+    [TestFixture]
+    public class BindTests_AppSettings : BindTests
+    {
+        public BindTests_AppSettings() : base("appSetings")
+        {
+        }
+    }
+
+    [TestFixture]
+    public class BindTests_CustomSection : BindTests
+    {
+        public BindTests_CustomSection() : base("customSection")
+        {
+        }
+    }
+
     public class BindTests
     {
+        private readonly string _sectionName;
         private dynamic configuration;
+
+        public BindTests()
+        {
+        }
+
+        public BindTests(string sectionName)
+        {
+            _sectionName = sectionName;
+        }
 
         [SetUp]
         public void SetUp()
         {
-            configuration = new Configuration();
+            if (_sectionName == null)
+            {
+                configuration = new Configuration();
+            }
+            else
+            {
+                configuration = new Configuration(_sectionName);
+            }
         }
 
         [Test]

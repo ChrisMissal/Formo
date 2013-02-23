@@ -5,9 +5,17 @@ using NUnit.Framework;
 
 namespace Formo.Tests
 {
-    [TestFixture]
     public class When_forced_to_use_a_string_key : ConfigurationTestBase
     {
+        public When_forced_to_use_a_string_key()
+        {
+            
+        }
+        public When_forced_to_use_a_string_key(string sectionName)
+            : base(sectionName)
+        {
+        }
+
         [Test]
         public void Get_method_should_return_value()
         {
@@ -25,15 +33,24 @@ namespace Formo.Tests
         }
     }
 
-    [TestFixture]
     public class When_using_typed_configuration_values : ConfigurationTestBase
     {
         private dynamic germanConfiguration;
+        private string _sectionName;
+        public When_using_typed_configuration_values()
+        {
+            
+        }
+        public When_using_typed_configuration_values(string sectionName)
+            : base(sectionName)
+        {
+            _sectionName = sectionName;
+        }
 
         [SetUp]
         public void SetUp()
         {
-            germanConfiguration = new Configuration(new CultureInfo("de"));
+            germanConfiguration = new Configuration(_sectionName, new CultureInfo("de"));
         }
 
         [Test]
@@ -77,9 +94,17 @@ namespace Formo.Tests
         }
     }
 
-    [TestFixture]
     public class When_key_is_in_configuration_file : ConfigurationTestBase
     {
+        public When_key_is_in_configuration_file()
+        {
+            
+        }
+        public When_key_is_in_configuration_file(string sectionName)
+            : base(sectionName)
+        {
+        }
+
         [Test]
         public void Property_should_return_expected_value()
         {
@@ -108,9 +133,17 @@ namespace Formo.Tests
         }
     }
 
-    [TestFixture]
     public class When_key_isnt_in_configuration_file : ConfigurationTestBase
     {
+        public When_key_isnt_in_configuration_file()
+        {
+            
+        }
+        public When_key_isnt_in_configuration_file(string sectionName)
+            : base(sectionName)
+        {
+        }
+
         [Test]
         public void Property_should_be_null()
         {
@@ -151,6 +184,16 @@ namespace Formo.Tests
 
     public class ConfigurationTestBase
     {
-        protected dynamic configuration = new Configuration();
+        public ConfigurationTestBase(string sectionName)
+        {
+            configuration = new Configuration(sectionName);
+        }
+
+        public ConfigurationTestBase()
+        {
+            configuration = new Configuration();
+        }
+
+        protected dynamic configuration;
     }
 }
