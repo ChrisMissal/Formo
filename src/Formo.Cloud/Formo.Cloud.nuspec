@@ -1,0 +1,16 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Chris Missal</authors>
+    <owners>Chris Missal</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <projectUrl>https://github.com/ChrisMissal/Formo</projectUrl>
+    <licenseUrl>https://raw.github.com/ChrisMissal/Formo/master/license.txt</licenseUrl>
+    <copyright>Copyright 2013 Chris Missal</copyright>
+    <tags>configuration dynamic cloud</tags>
+  </metadata>
+</package>
