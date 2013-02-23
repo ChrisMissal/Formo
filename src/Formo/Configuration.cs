@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
 using System.Dynamic;
@@ -10,21 +11,31 @@ namespace Formo
 {
     public class Configuration : DynamicObject
     {
+        private const string AppSettingsSectionName = "appSettings";
+        private readonly NameValueCollection _section;
         private readonly CultureInfo _cultureInfo;
         private static readonly List<TypeConverter> conversions = new List<TypeConverter>();
 
-        public Configuration(CultureInfo cultureInfo, params TypeConverter[] customConvters) : this(cultureInfo, customConvters.AsEnumerable())
+        public Configuration(CultureInfo cultureInfo) : this(null, cultureInfo, null)
         {
         }
 
-        public Configuration(params TypeConverter[] customConvters) : this(CultureInfo.CurrentCulture, customConvters.AsEnumerable())
+        public Configuration(string sectionName = null, CultureInfo cultureInfo = null) : this(sectionName, cultureInfo, null)
         {
         }
 
-        public Configuration(CultureInfo cultureInfo, IEnumerable<TypeConverter> customConverters)
+        public Configuration(string sectionName, CultureInfo cultureInfo, params TypeConverter[] customConvters) : this(sectionName, cultureInfo, customConvters.AsEnumerable())
         {
-            _cultureInfo = cultureInfo;
-            conversions.AddRange(customConverters);
+        }
+
+        public Configuration(string sectionName, CultureInfo cultureInfo, IEnumerable<TypeConverter> customConverters = null)
+        {
+            _section = (NameValueCollection)ConfigurationManager.GetSection(sectionName ?? AppSettingsSectionName);
+            _cultureInfo = cultureInfo ?? CultureInfo.CurrentCulture;
+            if (customConverters != null)
+            {
+                conversions.AddRange(customConverters);
+            }
         }
 
         internal object ConvertValue(Type destinationType, object value)
@@ -84,7 +95,7 @@ namespace Formo
 
         protected virtual string GetValue(string name)
         {
-            return ConfigurationManager.AppSettings[name];
+            return _section[name];
         }
 
         public T Bind<T>()
