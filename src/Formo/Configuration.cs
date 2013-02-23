@@ -87,7 +87,7 @@ namespace Formo
             return ConfigurationManager.AppSettings[name];
         }
 
-        public T Bind<T>()
+        public T Bind<T>() where T : new()
         {
             var instance = Activator.CreateInstance<T>();
             var binder = new SettingsBinder();
