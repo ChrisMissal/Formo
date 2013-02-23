@@ -82,7 +82,7 @@ namespace Formo
             return typeArgs.FirstOrDefault();
         }
 
-        private static string GetValue(string name)
+        protected virtual string GetValue(string name)
         {
             return ConfigurationManager.AppSettings[name];
         }
