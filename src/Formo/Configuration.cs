@@ -27,7 +27,7 @@ namespace Formo
             conversions.AddRange(customConverters);
         }
 
-        private object ConvertValue(Type destinationType, object value)
+        internal object ConvertValue(Type destinationType, object value)
         {
             if (value == null)
                 return null;
@@ -85,6 +85,14 @@ namespace Formo
         private static string GetValue(string name)
         {
             return ConfigurationManager.AppSettings[name];
+        }
+
+        public T Bind<T>()
+        {
+            var instance = Activator.CreateInstance<T>();
+            var binder = new SettingsBinder();
+
+            return binder.WithSettings(instance, this);
         }
     }
 }
