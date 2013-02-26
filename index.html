@@ -108,8 +108,34 @@ var background = configuration.ImageUrl(userBackground, "gradient.png");</pre>
 
           </article>
 
-        </section>
+		  <article id="fallback_to_defaults">
+            <h1>Configuration Sections</h1>
+			<p>You can use Formo on Configuration Sections:</p>
 
+			<pre class="xml">&lt;configuration&gt;
+	&lt;configSections&gt;
+		&lt;section name="customSection" type="System.Configuration.NameValueSectionHandler"/&gt;
+	&lt;/configSections&gt;
+	&lt;customSection&gt;
+		&lt;add key="ApplicationBuildDate" value="11/4/1999 6:23 AM" /&gt;
+	&lt;/customSection&gt;
+	&lt;appSettings&gt;
+	&lt;/appSettings&gt;
+&lt;/configuration></pre>
+
+			<p>This still works from the previous example:</p>
+
+			<pre class="csharp">dynamic config = new Configuration("customSection");
+var appBuildDate = config.ApplicationBuildDate<DateTime>();</pre>
+
+			<p>Remark the name of the section to load on the Configuration creation.
+So far the only suported sections are based on System.Configuration.NameValueSectionHandler.
+			</p>
+			<p>The Property Binding feature also works on sections.
+			</p>
+		  <article>
+
+        </section>
 
         <footer>
           Formo is maintained by <a href="https://github.com/ChrisMissal">ChrisMissal</a><br>
