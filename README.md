@@ -65,6 +65,31 @@ resulting in...
     settings.SessionTimeout == 20;
     settings.SiteTitle == "Cat Facts";
 
+***Configuration Section***
+
+You can use Formo on Configuration Sections
+
+    <configuration>
+		<configSections>
+			<section name="customSection" type="System.Configuration.NameValueSectionHandler"/>
+		</configSections>
+		<customSection>
+			<add key="ApplicationBuildDate" value="11/4/1999 6:23 AM" />
+		</customSection>
+		<appSettings>
+		</appSettings>
+	</configuration>
+
+This still works from the previous example:
+
+	dynamic config = new Configuration("customSection");
+    var appBuildDate = config.ApplicationBuildDate<DateTime>();
+
+Remark the name of the section to load on the Configuration creation.
+So far the only suported sections are based on `System.Configuration.NameValueSectionHandler`.
+
+The Property Binding feature also works on sections.
+
 ## Enhancements / Feedback / Issues
 
 Use the issues tab to get in touch with me about any improvements that could be made, or any bugs you encounter.
