@@ -17,12 +17,32 @@ namespace Formo.Tests
             Assert.That(key, Is.EqualTo("something"));
             Assert.That(secret, Is.EqualTo("blah"));
         }
+
+        [Test]
+        public void Can_retreive_namespaced_settings_as_methods()
+        {
+            var thing = configuration.Namespace.Thing<decimal>();
+            var words = configuration.Namespace.Words<string>();
+
+            Assert.That(thing, Is.EqualTo(123.45m));
+            Assert.That(words, Is.EqualTo("hello world!"));
+        }
+
+        [Test]
+        public void Can_retreive_namespaced_settings_as_methods_with_defaults()
+        {
+            var thing = configuration.Namespace().MissingThing(99.99m);
+            var words = configuration.Namespace.MissingWords("hi mom!");
+
+            Assert.That(thing, Is.EqualTo(99.99m));
+            Assert.That(words, Is.EqualTo("hi mom!"));
+        }
     }
 
     public class When_using_namespaced_values_that_dont_exist : ConfigurationTestBase
     {
         [Test]
-        public void Expect_exception_if_deep_namespace_fails_early()
+        public void Expect_exception_if_deep_namespace_fails_early_on_property()
         {
             Assert.Throws<Microsoft.CSharp.RuntimeBinder.RuntimeBinderException>(() =>
             {
@@ -31,13 +51,23 @@ namespace Formo.Tests
         }
 
         [Test]
-        public void Expect_helpful_exception_if_deep_namespace_fails()
+        public void Expect_helpful_exception_if_deep_namespace_fails_on_property()
         {
             var ex = Assert.Throws<KeyNotFoundException>(() =>
             {
                 var _ = configuration.ThirdPartyApi.Null;
             });
             Assert.That(ex.Message, Contains.Substring("ThirdPartyApi.Null"));
+        }
+
+        [Test]
+        public void Expect_helpful_exception_if_deep_namespace_fails_on_method()
+        {
+            var ex = Assert.Throws<KeyNotFoundException>(() =>
+            {
+                var _ = configuration.Namespace.MissingSetting();
+            });
+            Assert.That(ex.Message, Contains.Substring("Namespace.MissingSetting"));
         }
     }
 

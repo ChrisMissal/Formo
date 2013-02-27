@@ -79,7 +79,7 @@ namespace Formo
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            var name = string.IsNullOrWhiteSpace(_prefix) ? binder.Name : string.Join(".", new[] { _prefix, binder.Name });
+            var name = GetPrefix(_prefix, binder.Name);
             result = GetValue(name);
 
             var isNamespaced = IsNamespaced(name);
@@ -92,6 +92,11 @@ namespace Formo
             return true;
         }
 
+        private static string GetPrefix(string prefix, string name)
+        {
+            return string.IsNullOrWhiteSpace(prefix) ? name : string.Join(".", new[] { prefix, name });
+        }
+
         private bool IsNamespaced(string key)
         {
             return _section.AllKeys.Any(x => x.StartsWith(key));
@@ -100,10 +105,17 @@ namespace Formo
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
             var generic = GetGenericType(binder);
+            var name = GetPrefix(_prefix, binder.Name);
 
-            var value = GetValue(binder.Name).OrFallbackTo(args);
-
+            var value = GetValue(name).OrFallbackTo(args);
             result = generic != null ? ConvertValue(generic, value) : value;
+
+            var isNamespaced = IsNamespaced(name);
+            if (result == null && !isNamespaced && !string.IsNullOrWhiteSpace(_prefix))
+                throw ThrowHelper.FailedSettingLookup(name, _sectionName);
+
+            if (result == null && isNamespaced)
+                result = new Configuration(_section, _cultureInfo, _converters, name);
 
             return true;
         }
