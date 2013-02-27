@@ -1,10 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using NUnit.Framework;
 
 namespace Formo.Tests
 {
+    public class When_using_namespaced_values_that_exist : ConfigurationTestBase
+    {
+        [Test]
+        public void Can_retreive_namespaced_settings_as_properties()
+        {
+            var key = configuration.ThirdPartyApi.Key;
+            var secret = configuration.ThirdPartyApi.Secret;
+
+            Assert.That(key, Is.EqualTo("something"));
+            Assert.That(secret, Is.EqualTo("blah"));
+        }
+    }
+
+    public class When_using_namespaced_values_that_dont_exist : ConfigurationTestBase
+    {
+        [Test]
+        public void Expect_exception_if_deep_namespace_fails_early()
+        {
+            Assert.Throws<Microsoft.CSharp.RuntimeBinder.RuntimeBinderException>(() =>
+            {
+                var _ = configuration.Null.Key;
+            });
+        }
+
+        [Test]
+        public void Expect_helpful_exception_if_deep_namespace_fails()
+        {
+            var ex = Assert.Throws<KeyNotFoundException>(() =>
+            {
+                var _ = configuration.ThirdPartyApi.Null;
+            });
+            Assert.That(ex.Message, Contains.Substring("ThirdPartyApi.Null"));
+        }
+    }
+
     public class When_forced_to_use_a_string_key : ConfigurationTestBase
     {
         public When_forced_to_use_a_string_key()

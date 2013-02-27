@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Formo
 {
@@ -13,6 +14,14 @@ namespace Formo
                 message += (Environment.NewLine + "> " + optionalMessage + Environment.NewLine);
 
             return new InvalidCastException(message);
+        }
+
+        internal static Exception FailedSettingLookup(string key, string section)
+        {
+            var sectionMessage = string.IsNullOrWhiteSpace(section) ? "" : " in section '{1}'".FormatWith(section);
+            var message = "Unable to find setting by the key '{0}'{1}".FormatWith(key ?? "(null)", sectionMessage);
+
+            return new KeyNotFoundException(message);
         }
     }
 }
