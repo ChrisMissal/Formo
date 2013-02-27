@@ -90,6 +90,10 @@ So far the only suported sections are based on `System.Configuration.NameValueSe
 
 The Property Binding feature also works on sections.
 
+***Namespaced Settings***
+
+The ability to reference chained or namespaced settings is now working. This is currently experimental, see issue #13 for details.
+
 ## Enhancements / Feedback / Issues
 
 Use the issues tab to get in touch with me about any improvements that could be made, or any bugs you encounter.
