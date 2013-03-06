@@ -51,6 +51,7 @@
     <Compile Include="FormoTests_AppSettings.cs" />
     <Compile Include="FormoTests_Default.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestModels\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

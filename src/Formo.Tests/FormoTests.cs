@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Configuration;
 using System.Globalization;
+using System.Linq;
+using Formo.Tests.TestModels;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Formo.Tests
 {
@@ -179,6 +182,32 @@ namespace Formo.Tests
             var actual = configuration.IsSettingMissing<bool>();
 
             Assert.AreSame(expected, actual);
+        }
+    }
+
+    [TestFixture]
+    public class When_getting_a_collection_from_missing_custom_section : ConfigurationTestBase
+    {
+        public When_getting_a_collection_from_missing_custom_section()
+            : base("bindAllSection")
+        {
+        }
+
+        [TestCase(101, "Chris")]
+        [TestCase(102, "Marisol")]
+        [TestCase(103, "Allison")]
+        [TestCase(104, "Ryan")]
+        [TestCase(105, "Ben")]
+        [TestCase(106, "Laurie")]
+        [TestCase(107, "Paige")]
+        [TestCase(108, "Nitya")]
+        public void BindPairs_should_return_a_collection_of_Users_with_properties_set(int id, string name)
+        {
+            var config = (Configuration) configuration;
+            var collection = config.BindPairs<User, int, string>(x => x.ID, x => x.Name).ToArray();
+
+            collection.Count().ShouldBe(8);
+            collection.First(x => x.ID == id).Name.ShouldBe(name);
         }
     }
 

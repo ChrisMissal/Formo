@@ -6,6 +6,8 @@ using System.Configuration;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Formo
 {
@@ -14,13 +16,17 @@ namespace Formo
         private const string AppSettingsSectionName = "appSettings";
         private readonly NameValueCollection _section;
         private readonly CultureInfo _cultureInfo;
-        private static readonly List<TypeConverter> conversions = new List<TypeConverter>();
+        private readonly List<TypeConverter> conversions = new List<TypeConverter>();
 
         public Configuration(CultureInfo cultureInfo) : this(null, cultureInfo, null)
         {
         }
 
         public Configuration(string sectionName = null, CultureInfo cultureInfo = null) : this(sectionName, cultureInfo, null)
+        {
+        }
+
+        public Configuration(string sectionName, params TypeConverter[] customConveters) : this(sectionName, null, customConveters)
         {
         }
 
@@ -104,6 +110,27 @@ namespace Formo
             var binder = new SettingsBinder();
 
             return binder.WithSettings(instance, this);
+        }
+
+        public IEnumerable<T> BindPairs<T, TKey, TValue>(Expression<Func<T, TKey>> keyExpression, Expression<Func<T, TValue>> valueExpression) where T : new()
+        {
+            var keyConverter = TypeDescriptor.GetConverter(keyExpression.ReturnType);
+            var valConverter = TypeDescriptor.GetConverter(valueExpression.ReturnType);
+
+            foreach (var key in _section.AllKeys)
+            {
+                var k = keyConverter.ConvertFrom(key);
+                var v = valConverter.ConvertFrom(_section[key]);
+
+                var instance = Activator.CreateInstance<T>();
+
+                ((PropertyInfo)((MemberExpression)valueExpression.Body).Member)
+                    .SetValue(instance, v, null);
+                ((PropertyInfo)((MemberExpression)keyExpression.Body).Member)
+                    .SetValue(instance, k, null);
+
+                yield return instance;
+            }
         }
     }
 }
