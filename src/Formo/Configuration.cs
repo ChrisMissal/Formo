@@ -18,6 +18,8 @@ namespace Formo
         private readonly CultureInfo _cultureInfo;
         private readonly List<TypeConverter> conversions = new List<TypeConverter>();
 
+        protected readonly string _sectionName;
+
         public Configuration(CultureInfo cultureInfo) : this(null, cultureInfo, null)
         {
         }
@@ -36,7 +38,8 @@ namespace Formo
 
         public Configuration(string sectionName, CultureInfo cultureInfo, IEnumerable<TypeConverter> customConverters = null)
         {
-            _section = (NameValueCollection)ConfigurationManager.GetSection(sectionName ?? AppSettingsSectionName);
+            _sectionName = sectionName ?? AppSettingsSectionName;
+            _section = (NameValueCollection)ConfigurationManager.GetSection(_sectionName);
             _cultureInfo = cultureInfo ?? CultureInfo.CurrentCulture;
             if (customConverters != null)
             {
