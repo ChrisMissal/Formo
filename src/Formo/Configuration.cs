@@ -17,6 +17,7 @@ namespace Formo
         private readonly NameValueCollection _section;
         private readonly CultureInfo _cultureInfo;
         private readonly List<TypeConverter> conversions = new List<TypeConverter>();
+        private readonly ConnectionStringsConfiguration _connectionStringsConfiguration;
 
         protected readonly string _sectionName;
 
@@ -40,6 +41,7 @@ namespace Formo
         {
             _sectionName = sectionName ?? AppSettingsSectionName;
             _section = (NameValueCollection)ConfigurationManager.GetSection(_sectionName);
+            _connectionStringsConfiguration = new ConnectionStringsConfiguration(ConfigurationManager.ConnectionStrings);
             _cultureInfo = cultureInfo ?? CultureInfo.CurrentCulture;
             if (customConverters != null)
             {
@@ -133,6 +135,14 @@ namespace Formo
                     .SetValue(instance, k, null);
 
                 yield return instance;
+            }
+        }
+
+        public dynamic ConnectionString
+        {
+            get
+            {
+                return _connectionStringsConfiguration;
             }
         }
     }
