@@ -115,7 +115,7 @@ To install Formo, please use NuGet:
 
     Install-Package Formo
 
-## Enhancements / Feedback / Issues
+## Enhancements / Feedback
 
-Use the issues tab to get in touch with me about any improvements that could be made, or any bugs you encounter.
+Use the issues link to get in touch with me about any improvements that could be made, or any bugs you encounter.
 
