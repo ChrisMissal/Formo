@@ -1,6 +1,6 @@
 # Formo [![endorse](http://api.coderwall.com/chrismissal/endorsecount.png)](http://coderwall.com/chrismissal)
 
-Formo was built on some code that I've used many times in the past. This time, however, I leveraged some fun dynamic goodness.
+Formo allows you to use your configuration file as a dynamic object. Turn your web.config or application settings into a rich, dynamic object.
 
 [![NuGet Status](http://nugetstatus.com/Formo.png)](http://nugetstatus.com/packages/Formo)
 
