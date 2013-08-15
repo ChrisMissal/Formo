@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/ChrisMissal/Formo.png?label=ready)](https://waffle.io/ChrisMissal/Formo)  
 # Formo [![endorse](http://api.coderwall.com/chrismissal/endorsecount.png)](http://coderwall.com/chrismissal)
 
 Formo allows you to use your configuration file as a dynamic object. Turn your web.config or application settings into a rich, dynamic object.
