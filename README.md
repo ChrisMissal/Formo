@@ -111,7 +111,7 @@ The Property Binding feature also works on sections.
 
 ## Installation
 
-To install Formo, please use NuGet:
+To install Formo, please use NuGet ([Formo NuGet Page](https://www.nuget.org/packages/Formo/)):
 
     Install-Package Formo
 
