@@ -109,6 +109,30 @@ So far the only suported sections are based on `System.Configuration.NameValueSe
 
 The Property Binding feature also works on sections.
 
+### Connection Strings
+
+You can also access connection strings by name like so:
+
+```csharp
+dynamic config = new Configuration();
+var devConnection = config.ConnectionString.Development;
+var prodConnection = config.ConnectionString.Production;
+```
+
+Given that there are connection strings in the configuration that matches the following config:
+
+```xml
+<?xml version="1.0"?>
+<configuration>
+  <!-- stuff -->
+  <connectionStrings>
+    <add connectionString="<some dev connection...>" name="Development"/>
+    <add connectionString="<the production connection...>" name="Production"/>
+  </connectionStrings>
+  <!-- more stuff -->
+</configuration>
+```
+
 ## Installation
 
 To install Formo, please use NuGet ([Formo NuGet Page](https://www.nuget.org/packages/Formo/)):
