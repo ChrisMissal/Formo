@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Formo.Cloud")]
-[assembly: AssemblyDescription("Formo lets you use your configuration file as a dynamic object.")]
+[assembly: AssemblyDescription("Formo.Cloud works like Formo, but for applications using Azure Configuration.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Formo.Cloud")]
