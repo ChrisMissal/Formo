@@ -54,6 +54,9 @@ namespace Formo
             if (value == null)
                 return null;
 
+            if(destinationType.IsInstanceOfType(value))
+                return value;
+
             var typeConverter = TypeDescriptor.GetConverter(destinationType);
             if (typeConverter.CanConvertFrom(value.GetType()))
                 return typeConverter.ConvertFrom(null, _cultureInfo, value);
