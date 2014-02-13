@@ -211,6 +211,57 @@ namespace Formo.Tests
         }
     }
 
+    [TestFixture]
+    public class When_key_isnt_in_conguration : ConfigurationTestBase
+    { 
+        [Test]
+        public void Method_with_string_argument_should_use_argument()
+        {
+            bool unspecified = configuration.NonExisting<bool>("true");
+
+            Assert.That(unspecified, Is.True);
+        }
+        
+        [Test]
+        public void Method_with_same_type_bool_argument_should_use_argument()
+        {
+            bool unspecified = configuration.NonExisting<bool>(true);
+
+            Assert.That(unspecified, Is.True);
+        }
+        
+        [Test]
+        public void Method_with_same_type_date_argument_should_use_default_argument()
+        {
+            DateTime unspecified = configuration.NonExisting<DateTime>(new DateTime(2014, 2, 10));
+
+            Assert.That(unspecified, Is.EqualTo(new DateTime(2014, 2, 10)));
+        }
+
+        [Test]
+        public void Method_with_inheritance_default_argument_should_use_it()
+        {
+            var instance = new TestImplementation();
+
+            ITest unspecified = configuration.NonExisting<ITest>(instance);
+
+            Assert.That(unspecified, Is.EqualTo(instance));
+        }
+
+        public interface ITest
+        {
+            void Test();
+        }
+
+        public class TestImplementation : ITest
+        {
+            public void Test()
+            {
+                Console.WriteLine("Testing");
+            }
+        }
+    }
+
     public class ConfigurationTestBase
     {
         public ConfigurationTestBase(string sectionName)
