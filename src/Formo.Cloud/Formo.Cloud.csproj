@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Formo">
-      <HintPath>..\packages\Formo.1.4.0.37184\lib\net40\Formo.dll</HintPath>
+      <HintPath>..\packages\Formo.1.4.1.24040\lib\net40\Formo.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
