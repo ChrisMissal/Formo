@@ -143,3 +143,9 @@ To install Formo, please use NuGet ([Formo NuGet Page](https://www.nuget.org/pac
 
 Use the issues link to get in touch with me about any improvements that could be made, or any bugs you encounter.
 
+## Contributors
+
+* [@ChrisMissal](https://github.com/ChrisMissal) - code
+* [@kappy](https://github.com/kappy) - code
+* [@thomasvm](https://github.com/thomasvm) - code
+* [@timgthomas](https://github.com/timgthomas) - logo
