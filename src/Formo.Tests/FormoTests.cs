@@ -77,7 +77,7 @@ namespace Formo.Tests
         {
             var actual = configuration.ApplicationBuildDate<DateTime>();
 
-            Assert.That(actual, Is.EqualTo(new DateTime(1999, 11, 4, 6, 23, 0)));
+            Assert.That(actual, Is.EqualTo(new DateTime(1999, 4, 11, 6, 23, 0)));
         }
 
         [Test]
