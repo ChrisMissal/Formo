@@ -149,3 +149,4 @@ Use the issues link to get in touch with me about any improvements that could be
 * [@kappy](https://github.com/kappy) - code
 * [@thomasvm](https://github.com/thomasvm) - code
 * [@timgthomas](https://github.com/timgthomas) - logo
+* [@chaitanyagurrapu](https://github.com/chaitanyagurrapu) - code
