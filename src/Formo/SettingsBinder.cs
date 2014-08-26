@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 using System.Reflection;
 
 namespace Formo
@@ -33,7 +35,8 @@ namespace Formo
                 };
 
             var vals = from key in keys
-                       let attempt = configuration.ConvertValue(type, configuration.Get(key))
+                       let attempt = type == typeof(ConnectionStringSettings) ? configuration.ConnectionString.Get(key) 
+                                                                              : configuration.ConvertValue(type, configuration.Get(key))
                        where attempt != null
                        select attempt;
 
