@@ -44,6 +44,7 @@ dynamic config = new Configuration(new CultureInfo("de"));
 ```
 
 ### Property Binding
+<a name="propertyBinding"></a>
 
 You can also use Formo to bind settings values to properties on an object:
 
@@ -131,6 +132,54 @@ Given that there are connection strings in the configuration that matches the fo
   </connectionStrings>
   <!-- more stuff -->
 </configuration>
+```
+
+### Connection Strings With Property Bindings
+when using Formo to automatically bind settings values to properties on an object as described [here](#propertyBinding),
+connection strings are automatically bound if the object contains properties of type "ConnectionStringSettings" :
+
+given:
+
+```xml
+<appSettings>
+    <add key="SessionTimeout" value="20" />
+    <add key="WebsiteSettingsSiteTitle" value="Cat Facts" />
+</appSettings>
+  <!-- stuff -->
+  <connectionStrings>
+    <add connectionString="<some dev connection...>" name="Development"/>
+    <add connectionString="<the production connection...>" name="Production"/>
+  </connectionStrings>
+  <!-- more stuff -->
+```
+
+and...
+
+```csharp
+public class WebsiteSettings
+{
+    public int SessionTimeout { get; set; }
+    public string SiteTitle { get; set; }
+
+    public ConnectionStringSettings Development { get; set; }
+    public ConnectionStringSettings Production { get; set; }
+}
+```
+
+then...
+
+```csharp
+dynamic config = new Configuration();
+var settings = config.Bind<WebsiteSettings>();
+```
+
+resulting in...
+
+```csharp
+settings.SessionTimeout = 20;
+settings.SiteTitle = "Cat Facts";
+settings.Development = "<some dev connection...>";
+settings.Production = "<the production connection...>";
 ```
 
 ## Installation
