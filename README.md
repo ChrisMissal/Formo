@@ -44,7 +44,6 @@ dynamic config = new Configuration(new CultureInfo("de"));
 ```
 
 ### Property Binding
-<a name="propertyBinding"></a>
 
 You can also use Formo to bind settings values to properties on an object:
 
