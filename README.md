@@ -134,7 +134,7 @@ Given that there are connection strings in the configuration that matches the fo
 ```
 
 ### Connection Strings With Property Bindings
-when using Formo to automatically bind settings values to properties on an object as described [here](#propertyBinding),
+when using Formo to automatically bind settings values to properties on an object as described [here](#property-binding),
 connection strings are automatically bound if the object contains properties of type "ConnectionStringSettings" :
 
 given:
