@@ -1,4 +1,4 @@
-# Formo [![endorse](http://api.coderwall.com/chrismissal/endorsecount.png)](http://coderwall.com/chrismissal)
+# Formo
 
 Formo allows you to use your configuration file as a dynamic object. Turn your web.config or application settings into a rich, dynamic object.
 
@@ -185,7 +185,7 @@ settings.Production = "<the production connection...>";
 
 To install Formo, please use NuGet ([Formo NuGet Page](https://www.nuget.org/packages/Formo/)):
 
-    Install-Package Formo
+    PM> Install-Package Formo
 
 ## Enhancements / Feedback
 
