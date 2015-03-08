@@ -2,8 +2,6 @@
 
 Formo allows you to use your configuration file as a dynamic object. Turn your web.config or application settings into a rich, dynamic object.
 
-[![NuGet Status](http://nugetstatus.com/Formo.png)](http://nugetstatus.com/packages/Formo)
-
 ## How to use it
 
 Given you have a few of the following settings in your app.config file, you can new up a `Configuration` object and call those settings directly through a property.
