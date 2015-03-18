@@ -8,6 +8,27 @@ using Shouldly;
 
 namespace Formo.Tests
 {
+  public class When_environnement_variable_is_true : ConfigurationTestBase
+  {
+    public When_environnement_variable_is_true()
+      : base( null, true )
+    {
+
+    }
+    public When_environnement_variable_is_true( string sectionName )
+      : base( sectionName, true )
+    {
+    }
+
+    [Test]
+    public void Is_HOMEDRIVE_ok()
+    {
+      var actual = configuration.Get( "HOMEDRIVE" );
+
+      Assert.That( actual, Is.EqualTo( "C:" ) );
+    }
+  }
+
     public class When_forced_to_use_a_string_key : ConfigurationTestBase
     {
         public When_forced_to_use_a_string_key()
@@ -76,6 +97,7 @@ namespace Formo.Tests
         public void Method_should_convert_to_DateTime()
         {
             var actual = configuration.ApplicationBuildDate<DateTime>();
+          var xx = new DateTime( 1999, 11, 4, 6, 23, 0 );
 
             Assert.That(actual, Is.EqualTo(new DateTime(1999, 11, 4, 6, 23, 0)));
         }
@@ -266,12 +288,18 @@ namespace Formo.Tests
     {
         public ConfigurationTestBase(string sectionName)
         {
-            configuration = new Configuration(sectionName);
+          configuration = new Configuration( sectionName, new CultureInfo( "en-US" ) );
+        }
+
+        public ConfigurationTestBase( string sectionName, bool includeEnvironmentVariables )
+        {
+          configuration = new Configuration( sectionName, new CultureInfo( "en-US" ), includeEnvironmentVariables );
         }
 
         public ConfigurationTestBase()
         {
-            configuration = new Configuration();
+          //configuration = new Configuration();
+          configuration = new Configuration( null, new CultureInfo( "en-US" ) );
         }
 
         protected dynamic configuration;
