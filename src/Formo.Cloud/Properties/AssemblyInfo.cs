@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Formo.Cloud")]
-[assembly: AssemblyCopyright("Copyright © Chris Missal 2013")]
+[assembly: AssemblyCopyright("Copyright © Chris Missal 2013 – 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
