@@ -115,6 +115,12 @@ namespace Formo
         public T Bind<T>() where T : new()
         {
             var instance = Activator.CreateInstance<T>();
+
+            return Bind(instance);
+        }
+
+        public T Bind<T>(T instance)
+        {
             var binder = new SettingsBinder();
 
             return binder.WithSettings(instance, this);
