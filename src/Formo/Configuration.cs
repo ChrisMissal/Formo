@@ -11,36 +11,72 @@ using System.Reflection;
 
 namespace Formo
 {
-    public class Configuration : DynamicObject
+  using System.Collections;
+
+  public class ReadWriteNameValueCollection : NameValueCollection
+  {
+    public bool PublicIsReadOnly { get; set; }
+  }
+
+  public class Configuration : DynamicObject
     {
         private const string AppSettingsSectionName = "appSettings";
-        private readonly NameValueCollection _section;
+        private readonly ReadWriteNameValueCollection _section;
         private readonly CultureInfo _cultureInfo;
         private readonly List<TypeConverter> conversions = new List<TypeConverter>();
         private readonly ConnectionStringsConfiguration _connectionStringsConfiguration;
 
         protected readonly string _sectionName;
 
-        public Configuration(CultureInfo cultureInfo) : this(null, cultureInfo, null)
+        public Configuration( CultureInfo cultureInfo, bool includeEnvironmentVariables = false )
+          : this( null, cultureInfo, includeEnvironmentVariables, null )
         {
         }
 
-        public Configuration(string sectionName = null, CultureInfo cultureInfo = null) : this(sectionName, cultureInfo, null)
+        public Configuration( string sectionName = null, CultureInfo cultureInfo = null, bool includeEnvironmentVariables = false )
+          : this( sectionName, cultureInfo, includeEnvironmentVariables, null )
         {
         }
 
-        public Configuration(string sectionName, params TypeConverter[] customConveters) : this(sectionName, null, customConveters)
+        public Configuration(string sectionName, bool includeEnvironmentVariables, params TypeConverter[] customConveters) : this(sectionName, null, includeEnvironmentVariables, customConveters )
         {
         }
 
-        public Configuration(string sectionName, CultureInfo cultureInfo, params TypeConverter[] customConvters) : this(sectionName, cultureInfo, customConvters.AsEnumerable())
+        public Configuration(string sectionName, CultureInfo cultureInfo, bool includeEnvironmentVariables, params TypeConverter[] customConvters) : this(sectionName, cultureInfo, includeEnvironmentVariables, customConvters.AsEnumerable() )
         {
         }
 
-        public Configuration(string sectionName, CultureInfo cultureInfo, IEnumerable<TypeConverter> customConverters = null)
+        public Configuration( string sectionName, CultureInfo cultureInfo, bool includeEnvironmentVariables, IEnumerable<TypeConverter> customConverters = null )
         {
             _sectionName = sectionName ?? AppSettingsSectionName;
-            _section = (NameValueCollection)ConfigurationManager.GetSection(_sectionName);
+            NameValueCollection _tmpSection = (NameValueCollection)ConfigurationManager.GetSection( _sectionName );
+
+            _section = new ReadWriteNameValueCollection() { PublicIsReadOnly = false };
+
+            if (_tmpSection != null)
+            {
+              foreach (string item in _tmpSection.AllKeys)
+              {
+                string key = item;
+                string value = _tmpSection.Get( key );
+                if (!string.IsNullOrWhiteSpace( key ) && !string.IsNullOrWhiteSpace( value ))
+                  _section.Add( key, value );
+              }
+            }
+
+            if (includeEnvironmentVariables)
+            {
+              foreach (DictionaryEntry item in System.Environment.GetEnvironmentVariables())
+              {
+                string key = item.Key as string;
+                string value = item.Value as string;
+                if (!string.IsNullOrWhiteSpace( key ) && !string.IsNullOrWhiteSpace( value ))
+                  _section.Add( key, value );
+              }
+            }
+
+            _section.PublicIsReadOnly = true;
+
             _connectionStringsConfiguration = new ConnectionStringsConfiguration(ConfigurationManager.ConnectionStrings);
             _cultureInfo = cultureInfo ?? CultureInfo.CurrentCulture;
             if (customConverters != null)
