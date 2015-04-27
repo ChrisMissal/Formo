@@ -215,17 +215,17 @@ namespace Formo.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(NullReferenceException), ExpectedMessage = "Could not get key \"Missing\" from the configuration file.")]
         public void Property_should_throw_NullReferenceException()
         {
             var shouldThrow = configuration.Missing;
         }
 
         [Test]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(NullReferenceException), ExpectedMessage = "Could not get key \"Missing\" from the configuration file.")]
         public void Method_should_be_null()
         {
-            var shouldThrow = configuration.Misssing();
+            var shouldThrow = configuration.Missing();
         }
         
     }
