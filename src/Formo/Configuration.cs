@@ -14,6 +14,8 @@ namespace Formo
     public class Configuration : DynamicObject
     {
         private const string AppSettingsSectionName = "appSettings";
+
+        public bool ThrowIfNull { get; set; }
         private readonly NameValueCollection _section;
         private readonly CultureInfo _cultureInfo;
         private readonly List<TypeConverter> conversions = new List<TypeConverter>();

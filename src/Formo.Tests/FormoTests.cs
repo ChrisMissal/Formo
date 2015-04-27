@@ -138,19 +138,20 @@ namespace Formo.Tests
 
     public class When_key_isnt_in_configuration_file : ConfigurationTestBase
     {
-        public When_key_isnt_in_configuration_file()
+        public When_key_isnt_in_configuration_file(bool throwIfNull)
+            :base(throwIfNull)
         {
             
         }
 
-        protected When_key_isnt_in_configuration_file(string sectionName)
-            :base(sectionName)
+        protected When_key_isnt_in_configuration_file(string sectionName, bool throwIfNull)
+            :base(sectionName, throwIfNull)
         {
         }
 
 
         [Test]
-        public void Method_with_many_params_should_return_first_non_null()
+        protected void Method_with_many_params_should_return_first_non_null()
         {
             string first = null;
             var second = default(string);
@@ -159,7 +160,7 @@ namespace Formo.Tests
         }
 
         [Test]
-        public void Method_looking_for_bool_should_behave_as_ConfigurationManager()
+        protected void Method_looking_for_bool_should_behave_as_ConfigurationManager()
         {
             var key = "IsSettingMissing";
             var expected = ConfigurationManager.AppSettings[key];
@@ -169,7 +170,7 @@ namespace Formo.Tests
         }
 
         [Test]
-        public void Method_with_param_should_return_first()
+        protected void Method_with_param_should_return_first()
         {
             Assert.AreEqual("blargh", configuration.Missing("blargh"));
         }
@@ -178,11 +179,12 @@ namespace Formo.Tests
     public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false : When_key_isnt_in_configuration_file
     {
         public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false()
+            :base(false)
         {
             
         }
         public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false(string sectionName)
-            : base(sectionName)
+            : base(sectionName, false)
         {
         }
 
@@ -203,11 +205,12 @@ namespace Formo.Tests
     public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true : When_key_isnt_in_configuration_file
     {
         public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true()
+            :base(true)
         {
 
         }
         public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true(string sectionName)
-            : base(sectionName)
+            : base(sectionName, true)
         {
         }
 
@@ -306,16 +309,16 @@ namespace Formo.Tests
 
     public class ConfigurationTestBase
     {
-        public ConfigurationTestBase(string sectionName)
+        public ConfigurationTestBase(string sectionName, bool throwIfNull = false)
         {
-            configuration = new Configuration(sectionName);
+            configuration = new Configuration(sectionName) { ThrowIfNull = throwIfNull };
         }
 
-        public ConfigurationTestBase()
+        public ConfigurationTestBase(bool throwIfNull = false)
         {
-            configuration = new Configuration();
+            configuration = new Configuration() {ThrowIfNull = throwIfNull};
         }
 
-        protected dynamic configuration;
+        protected readonly dynamic configuration;
     }
 }
