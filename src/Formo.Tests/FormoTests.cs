@@ -95,6 +95,13 @@ namespace Formo.Tests
 
             Assert.That(actual, Is.EqualTo(true));
         }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException), ExpectedMessage="Could not obtain value \"NonParsableInt\" from configuration file")]
+        public void Should_throw_nice_exception_when_could_not_parse()
+        {
+            configuration.NonParsableInt<Int32>();
+        }
     }
 
     public class When_key_is_in_configuration_file : ConfigurationTestBase
