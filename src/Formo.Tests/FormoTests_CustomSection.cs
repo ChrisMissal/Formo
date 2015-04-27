@@ -37,9 +37,19 @@ namespace Formo.Tests
     }
 
     [TestFixture]
-    public class When_key_isnt_in_configuration_file_CustomSection : When_key_isnt_in_configuration_file
+    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false_CustomSection : When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false
     {
-        public When_key_isnt_in_configuration_file_CustomSection()
+        public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false_CustomSection()
+            : base("customSection")
+        {
+
+        }
+    }
+
+    [TestFixture]
+    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true_CustomSection : When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true
+    {
+        public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true_CustomSection()
             : base("customSection")
         {
 

@@ -142,28 +142,12 @@ namespace Formo.Tests
         {
             
         }
-        public When_key_isnt_in_configuration_file(string sectionName)
-            : base(sectionName)
+
+        protected When_key_isnt_in_configuration_file(string sectionName)
+            :base(sectionName)
         {
         }
 
-        [Test]
-        public void Property_should_be_null()
-        {
-            Assert.Null(configuration.Missing);
-        }
-
-        [Test]
-        public void Method_should_be_null()
-        {
-            Assert.Null(configuration.Misssing());
-        }
-
-        [Test]
-        public void Method_with_param_should_return_first()
-        {
-            Assert.AreEqual("blargh", configuration.Missing("blargh"));
-        }
 
         [Test]
         public void Method_with_many_params_should_return_first_non_null()
@@ -183,6 +167,64 @@ namespace Formo.Tests
 
             Assert.AreSame(expected, actual);
         }
+
+        [Test]
+        public void Method_with_param_should_return_first()
+        {
+            Assert.AreEqual("blargh", configuration.Missing("blargh"));
+        }
+    }
+
+    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false : When_key_isnt_in_configuration_file
+    {
+        public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false()
+        {
+            
+        }
+        public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false(string sectionName)
+            : base(sectionName)
+        {
+        }
+
+        [Test]
+        public void Property_should_be_null()
+        {
+            Assert.Null(configuration.Missing);
+        }
+
+        [Test]
+        public void Method_should_be_null()
+        {
+            Assert.Null(configuration.Misssing());
+        }
+
+    }
+
+    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true : When_key_isnt_in_configuration_file
+    {
+        public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true()
+        {
+
+        }
+        public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true(string sectionName)
+            : base(sectionName)
+        {
+        }
+
+        [Test]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Property_should_throw_NullReferenceException()
+        {
+            var shouldThrow = configuration.Missing;
+        }
+
+        [Test]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Method_should_be_null()
+        {
+            var shouldThrow = configuration.Misssing();
+        }
+        
     }
 
     [TestFixture]
