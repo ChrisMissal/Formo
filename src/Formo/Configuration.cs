@@ -111,7 +111,14 @@ namespace Formo
 
         protected virtual string GetValue(string name)
         {
-            return _section[name];
+            var value = _section[name];
+
+            if(ThrowIfNull && value == null)
+            {
+                throw new NullReferenceException(string.Format("Could not get key \"{0}\" from the configuration file.", name));
+            }
+
+            return value;
         }
 
         public T Bind<T>() where T : new()
