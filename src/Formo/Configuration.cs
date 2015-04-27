@@ -96,7 +96,14 @@ namespace Formo
 
             var value = GetValue(binder.Name).OrFallbackTo(args);
 
-            result = generic != null ? ConvertValue(generic, value) : value;
+            try
+            {
+                result = generic != null ? ConvertValue(generic, value) : value;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(string.Format("Could not obtain value \"{0}\" from configuration file", binder.Name), ex);
+            }
 
             return true;
         }
