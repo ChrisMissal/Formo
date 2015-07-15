@@ -61,7 +61,19 @@ namespace Formo
 
             var typeConverter = TypeDescriptor.GetConverter(destinationType);
             if (typeConverter.CanConvertFrom(value.GetType()))
-                return typeConverter.ConvertFrom(null, _cultureInfo, value);
+            {
+                try
+                {
+                    return typeConverter.ConvertFrom(null, _cultureInfo, value);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException is FormatException)
+                        throw ex.InnerException;
+
+                    throw;
+                }
+            }
 
             var converter = conversions.FirstOrDefault(x => x.CanConvertFrom(value.GetType()));
             if (converter != null)
@@ -100,7 +112,7 @@ namespace Formo
             {
                 result = generic != null ? ConvertValue(generic, value) : value;
             }
-            catch (Exception ex)
+            catch (FormatException ex)
             {
                 var message = "Could not obtain value '{0}' from configuration file".FormatWith(binder.Name);
                 throw ThrowHelper.FailedCast(generic, value, message, ex);
