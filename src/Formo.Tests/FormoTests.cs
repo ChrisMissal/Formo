@@ -97,10 +97,13 @@ namespace Formo.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage="Could not obtain value \"NonParsableInt\" from configuration file")]
         public void Should_throw_nice_exception_when_could_not_parse()
         {
-            configuration.NonParsableInt<Int32>();
+            var ex = Assert.Throws<InvalidCastException>(() => configuration.NonParsableInt<Int32>());
+
+            Assert.That(ex.Message, Is.EqualTo(
+                "Unable to cast setting value 'NOT_AN_INT' to 'System.Int32'" + Environment.NewLine +
+                "> Could not obtain value 'NonParsableInt' from configuration file" + Environment.NewLine));
         }
     }
 

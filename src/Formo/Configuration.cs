@@ -102,7 +102,8 @@ namespace Formo
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(string.Format("Could not obtain value \"{0}\" from configuration file", binder.Name), ex);
+                var message = "Could not obtain value '{0}' from configuration file".FormatWith(binder.Name);
+                throw ThrowHelper.FailedCast(generic, value, message, ex);
             }
 
             return true;
