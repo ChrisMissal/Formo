@@ -148,8 +148,8 @@ namespace Formo.Tests
 
     public class When_key_isnt_in_configuration_file : ConfigurationTestBase
     {
-        public When_key_isnt_in_configuration_file(bool throwIfNull)
-            :base(throwIfNull)
+        public When_key_isnt_in_configuration_file()
+            :base(false)
         {
             
         }
@@ -159,9 +159,8 @@ namespace Formo.Tests
         {
         }
 
-
         [Test]
-        protected void Method_with_many_params_should_return_first_non_null()
+        public void Method_with_many_params_should_return_first_non_null()
         {
             string first = null;
             var second = default(string);
@@ -170,7 +169,7 @@ namespace Formo.Tests
         }
 
         [Test]
-        protected void Method_looking_for_bool_should_behave_as_ConfigurationManager()
+        public void Method_looking_for_bool_should_behave_as_ConfigurationManager()
         {
             var key = "IsSettingMissing";
             var expected = ConfigurationManager.AppSettings[key];
@@ -180,13 +179,13 @@ namespace Formo.Tests
         }
 
         [Test]
-        protected void Method_with_param_should_return_first()
+        public void Method_with_param_should_return_first()
         {
             Assert.AreEqual("blargh", configuration.Missing("blargh"));
         }
     }
 
-    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false : When_key_isnt_in_configuration_file
+    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false : ConfigurationTestBase
     {
         public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false()
             :base(false)
@@ -212,7 +211,7 @@ namespace Formo.Tests
 
     }
 
-    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true : When_key_isnt_in_configuration_file
+    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true : ConfigurationTestBase
     {
         public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true()
             :base(true)
@@ -225,17 +224,23 @@ namespace Formo.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(NullReferenceException), ExpectedMessage = "Could not get key \"Missing\" from the configuration file.")]
         public void Property_should_throw_NullReferenceException()
         {
-            var shouldThrow = configuration.Missing;
+            var missing = default(dynamic);
+            var ex = Assert.Throws<InvalidOperationException>(() => missing = configuration.Missing);
+
+            Assert.Null(missing);
+            Assert.That(ex.Message, Is.EqualTo("Unable to locate a value for 'Missing' from configuration file"));
         }
 
         [Test]
-        [ExpectedException(typeof(NullReferenceException), ExpectedMessage = "Could not get key \"Missing\" from the configuration file.")]
         public void Method_should_be_null()
         {
-            var shouldThrow = configuration.Missing();
+            var missing = default(dynamic);
+            var ex = Assert.Throws<InvalidOperationException>(() => missing = configuration.Missing());
+
+            Assert.Null(missing);
+            Assert.That(ex.Message, Is.EqualTo("Unable to locate a value for 'Missing' from configuration file"));
         }
         
     }
@@ -326,7 +331,7 @@ namespace Formo.Tests
 
         public ConfigurationTestBase(bool throwIfNull = false)
         {
-            configuration = new Configuration() {ThrowIfNull = throwIfNull};
+            configuration = new Configuration { ThrowIfNull = throwIfNull };
         }
 
         protected readonly dynamic configuration;

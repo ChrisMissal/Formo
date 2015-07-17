@@ -135,7 +135,7 @@ namespace Formo
 
             if(ThrowIfNull && value == null)
             {
-                throw new NullReferenceException(string.Format("Could not get key \"{0}\" from the configuration file.", name));
+                throw new InvalidOperationException("Unable to locate a value for '{0}' from configuration file".FormatWith(name));
             }
 
             return value;
