@@ -95,6 +95,16 @@ namespace Formo.Tests
 
             Assert.That(actual, Is.EqualTo(true));
         }
+
+        [Test]
+        public void Should_throw_nice_exception_when_could_not_parse()
+        {
+            var ex = Assert.Throws<InvalidCastException>(() => configuration.NonParsableInt<Int32>());
+
+            Assert.That(ex.Message, Is.EqualTo(
+                "Unable to cast setting value 'NOT_AN_INT' to 'System.Int32'" + Environment.NewLine +
+                "> Could not obtain value 'NonParsableInt' from configuration file" + Environment.NewLine));
+        }
     }
 
     public class When_key_is_in_configuration_file : ConfigurationTestBase
@@ -139,30 +149,14 @@ namespace Formo.Tests
     public class When_key_isnt_in_configuration_file : ConfigurationTestBase
     {
         public When_key_isnt_in_configuration_file()
+            :base(false)
         {
             
         }
-        public When_key_isnt_in_configuration_file(string sectionName)
-            : base(sectionName)
-        {
-        }
 
-        [Test]
-        public void Property_should_be_null()
+        protected When_key_isnt_in_configuration_file(string sectionName, bool throwIfNull)
+            :base(sectionName, throwIfNull)
         {
-            Assert.Null(configuration.Missing);
-        }
-
-        [Test]
-        public void Method_should_be_null()
-        {
-            Assert.Null(configuration.Misssing());
-        }
-
-        [Test]
-        public void Method_with_param_should_return_first()
-        {
-            Assert.AreEqual("blargh", configuration.Missing("blargh"));
         }
 
         [Test]
@@ -183,6 +177,72 @@ namespace Formo.Tests
 
             Assert.AreSame(expected, actual);
         }
+
+        [Test]
+        public void Method_with_param_should_return_first()
+        {
+            Assert.AreEqual("blargh", configuration.Missing("blargh"));
+        }
+    }
+
+    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false : ConfigurationTestBase
+    {
+        public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false()
+            :base(false)
+        {
+            
+        }
+        public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false(string sectionName)
+            : base(sectionName, false)
+        {
+        }
+
+        [Test]
+        public void Property_should_be_null()
+        {
+            Assert.Null(configuration.Missing);
+        }
+
+        [Test]
+        public void Method_should_be_null()
+        {
+            Assert.Null(configuration.Misssing());
+        }
+
+    }
+
+    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true : ConfigurationTestBase
+    {
+        public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true()
+            :base(true)
+        {
+
+        }
+        public When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true(string sectionName)
+            : base(sectionName, true)
+        {
+        }
+
+        [Test]
+        public void Property_should_throw_NullReferenceException()
+        {
+            var missing = default(dynamic);
+            var ex = Assert.Throws<InvalidOperationException>(() => missing = configuration.Missing);
+
+            Assert.Null(missing);
+            Assert.That(ex.Message, Is.EqualTo("Unable to locate a value for 'Missing' from configuration file"));
+        }
+
+        [Test]
+        public void Method_should_be_null()
+        {
+            var missing = default(dynamic);
+            var ex = Assert.Throws<InvalidOperationException>(() => missing = configuration.Missing());
+
+            Assert.Null(missing);
+            Assert.That(ex.Message, Is.EqualTo("Unable to locate a value for 'Missing' from configuration file"));
+        }
+        
     }
 
     [TestFixture]
@@ -264,16 +324,16 @@ namespace Formo.Tests
 
     public class ConfigurationTestBase
     {
-        public ConfigurationTestBase(string sectionName)
+        public ConfigurationTestBase(string sectionName, bool throwIfNull = false)
         {
-            configuration = new Configuration(sectionName);
+            configuration = new Configuration(sectionName) { ThrowIfNull = throwIfNull };
         }
 
-        public ConfigurationTestBase()
+        public ConfigurationTestBase(bool throwIfNull = false)
         {
-            configuration = new Configuration();
+            configuration = new Configuration { ThrowIfNull = throwIfNull };
         }
 
-        protected dynamic configuration;
+        protected readonly dynamic configuration;
     }
 }

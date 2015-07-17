@@ -14,6 +14,8 @@ namespace Formo
     public class Configuration : DynamicObject
     {
         private const string AppSettingsSectionName = "appSettings";
+
+        public bool ThrowIfNull { get; set; }
         private readonly NameValueCollection _section;
         private readonly CultureInfo _cultureInfo;
         private readonly List<TypeConverter> conversions = new List<TypeConverter>();
@@ -59,7 +61,19 @@ namespace Formo
 
             var typeConverter = TypeDescriptor.GetConverter(destinationType);
             if (typeConverter.CanConvertFrom(value.GetType()))
-                return typeConverter.ConvertFrom(null, _cultureInfo, value);
+            {
+                try
+                {
+                    return typeConverter.ConvertFrom(null, _cultureInfo, value);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException is FormatException)
+                        throw ex.InnerException;
+
+                    throw;
+                }
+            }
 
             var converter = conversions.FirstOrDefault(x => x.CanConvertFrom(value.GetType()));
             if (converter != null)
@@ -94,7 +108,15 @@ namespace Formo
 
             var value = GetValue(binder.Name).OrFallbackTo(args);
 
-            result = generic != null ? ConvertValue(generic, value) : value;
+            try
+            {
+                result = generic != null ? ConvertValue(generic, value) : value;
+            }
+            catch (FormatException ex)
+            {
+                var message = "Could not obtain value '{0}' from configuration file".FormatWith(binder.Name);
+                throw ThrowHelper.FailedCast(generic, value, message, ex);
+            }
 
             return true;
         }
@@ -109,7 +131,14 @@ namespace Formo
 
         protected virtual string GetValue(string name)
         {
-            return _section[name];
+            var value = _section[name];
+
+            if(ThrowIfNull && value == null)
+            {
+                throw new InvalidOperationException("Unable to locate a value for '{0}' from configuration file".FormatWith(name));
+            }
+
+            return value;
         }
 
         public T Bind<T>() where T : new()

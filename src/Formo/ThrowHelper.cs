@@ -4,7 +4,7 @@ namespace Formo
 {
     internal class ThrowHelper
     {
-        internal static Exception FailedCast(Type attemptedType, object value, string optionalMessage = null)
+        internal static Exception FailedCast(Type attemptedType, object value, string optionalMessage = null, Exception ex = null)
         {
             var message = "Unable to cast setting value '{0}' to '{1}'"
                 .FormatWith(value ?? "(null)", attemptedType);
@@ -12,7 +12,7 @@ namespace Formo
             if (optionalMessage != null)
                 message += (Environment.NewLine + "> " + optionalMessage + Environment.NewLine);
 
-            return new InvalidCastException(message);
+            return new InvalidCastException(message, ex);
         }
     }
 }

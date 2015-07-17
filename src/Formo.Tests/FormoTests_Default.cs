@@ -25,8 +25,12 @@ namespace Formo.Tests
     }
 
     [TestFixture]
-    public class When_key_isnt_in_configuration_file_Default : When_key_isnt_in_configuration_file
+    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false_Default : When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_false
     {
+    }
 
+    [TestFixture]
+    public class When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true_Default : When_key_isnt_in_configuration_file_and_ThrowIfNull_set_to_true
+    {
     }
 }
