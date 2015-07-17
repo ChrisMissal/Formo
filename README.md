@@ -179,6 +179,15 @@ settings.Development = "<some dev connection...>";
 settings.Production = "<the production connection...>";
 ```
 
+### Access to Any Key/Value
+
+Sometimes, you may need to access a value that contains special characters in the key and cannot be referenced like a property of function. When this is the case, you can still get the value by the string representation, like so:
+
+```csharp
+dynamic config = new Configuration();
+var specialValue = config.Get("Some:Value!");
+```
+
 ## Installation
 
 To install Formo, please use NuGet ([Formo NuGet Page](https://www.nuget.org/packages/Formo/)):
