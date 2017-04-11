@@ -15,6 +15,11 @@ namespace Formo.Tests
         public ConnectionStringSettings LocalConnection { get; set; }
     }
 
+    public class MissingSettings
+    {
+        public string NotInConfigFile { get; set; }
+    }
+
     [TestFixture]
     public class BindTests_Default : BindTests
     {
@@ -86,10 +91,18 @@ namespace Formo.Tests
         }
 
         [Test]
+        public void Bind_should_assign_null_to_property_if_setting_is_missing()
+        {
+            MissingSettings settings = new Configuration().Bind<MissingSettings>();
+
+            settings.NotInConfigFile.ShouldBe(null);
+        }
+
+        [Test]
         public void Bind_should_throw_invalidoperationexception_if_setting_is_missing_and_throwifnull_is_true()
         {
             Should.Throw<InvalidOperationException>(
-                () => new Configuration {ThrowIfNull = true}.Bind<WebsiteSettings>()
+                () => new Configuration {ThrowIfNull = true}.Bind<MissingSettings>()
             );
         }
 
