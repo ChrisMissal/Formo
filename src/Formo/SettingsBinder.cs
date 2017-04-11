@@ -17,7 +17,16 @@ namespace Formo
             {
                 object value;
                 if (TryGetValue(propertyInfo, configuration, out value))
+                {
                     propertyInfo.SetValue(instance, value, null);
+                }
+                else
+                {
+                    if (configuration.ThrowIfNull)
+                    {
+                        throw new InvalidOperationException("Unable to locate a value for '{0}' from configuration file".FormatWith(propertyInfo.Name));
+                    }
+                }
             }
             return instance;
         }
