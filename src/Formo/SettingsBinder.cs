@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
@@ -35,8 +35,7 @@ namespace Formo
                 };
 
             var vals = from key in keys
-                       let attempt = type == typeof(ConnectionStringSettings) ? configuration.ConnectionString.Get(key) 
-                                                                              : configuration.ConvertValue(type, configuration.Get(key))
+                       let attempt = GetValueOrNull(type, key, configuration) 
                        where attempt != null
                        select attempt;
 
@@ -47,5 +46,19 @@ namespace Formo
             }
             return false;
         }
+
+        private static object GetValueOrNull(Type type, string key, Configuration configuration)
+        {
+            try
+            {
+                return type == typeof(ConnectionStringSettings) ? configuration.ConnectionString.Get(key)
+                                                                : configuration.ConvertValue(type, configuration.Get(key));
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
+        }
+
     }
 }
