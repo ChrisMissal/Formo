@@ -1,7 +1,7 @@
-﻿using System;
-using System.Configuration;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Shouldly;
+using System;
+using System.Configuration;
 
 namespace Formo.Tests
 {
@@ -67,6 +67,17 @@ namespace Formo.Tests
         public void Bind_should_assign_standalone_property_from_settings()
         {
             WebsiteSettings settings = new Configuration().Bind<WebsiteSettings>();
+
+            settings.Herp.ShouldBe("herp", Case.Sensitive);
+            settings.Derp.ShouldBe("derp", Case.Sensitive);
+            settings.SomeInteger.ShouldBe(123);
+            settings.ExpirationDate.ShouldBe(new DateTime(2011, 4, 16));
+        }
+
+        [Test]
+        public void Bind_should_assign_standalone_property_from_settings_when_throwifnull_is_true()
+        {
+            WebsiteSettings settings = new Configuration {ThrowIfNull = true}.Bind<WebsiteSettings>();
 
             settings.Herp.ShouldBe("herp", Case.Sensitive);
             settings.Derp.ShouldBe("derp", Case.Sensitive);
