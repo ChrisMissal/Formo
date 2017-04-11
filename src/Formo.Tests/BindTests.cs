@@ -86,6 +86,14 @@ namespace Formo.Tests
         }
 
         [Test]
+        public void Bind_should_throw_invalidoperationexception_if_setting_is_missing_and_throwifnull_is_true()
+        {
+            Should.Throw<InvalidOperationException>(
+                () => new Configuration {ThrowIfNull = true}.Bind<WebsiteSettings>()
+            );
+        }
+
+        [Test]
         public void Bind_should_assign_values_to_connection_strings()
         {
             WebsiteSettings settings = new Configuration().Bind<WebsiteSettings>();
