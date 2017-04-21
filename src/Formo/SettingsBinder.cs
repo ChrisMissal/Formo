@@ -24,7 +24,7 @@ namespace Formo
                 {
                     if (configuration.ThrowIfNull)
                     {
-                        throw new InvalidOperationException("Unable to locate a value for '{0}' from configuration file".FormatWith(propertyInfo.Name));
+                        throw ThrowHelper.KeyNotFound(propertyInfo.Name);
                     }
                 }
             }

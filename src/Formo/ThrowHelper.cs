@@ -14,5 +14,11 @@ namespace Formo
 
             return new InvalidCastException(message, ex);
         }
+
+        internal static Exception KeyNotFound(string key)
+        {
+            var message = "Unable to locate a value for '{0}' from configuration file".FormatWith(key);
+            return new InvalidOperationException(message);
+        }
     }
 }
