@@ -133,9 +133,9 @@ namespace Formo
         {
             var value = _section[name];
 
-            if(ThrowIfNull && value == null)
+            if (ThrowIfNull && value == null)
             {
-                throw new InvalidOperationException("Unable to locate a value for '{0}' from configuration file".FormatWith(name));
+                throw ThrowHelper.KeyNotFound(name);
             }
 
             return value;
