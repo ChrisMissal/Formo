@@ -206,3 +206,4 @@ Use the issues link to get in touch with me about any improvements that could be
 * [@timgthomas](https://github.com/timgthomas) - logo
 * [@chaitanyagurrapu](https://github.com/chaitanyagurrapu) - code
 * [@onliner10](https://github.com/onliner10) - code
+* [@urig](https://github.com/urig) - code
